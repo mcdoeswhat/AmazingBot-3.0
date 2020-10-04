@@ -1,6 +1,7 @@
 package me.albert.amazingbot.bot;
 
 import me.albert.amazingbot.AmazingBot;
+import me.albert.amazingbot.database.MySQL;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;
 import org.bukkit.Bukkit;
@@ -57,12 +58,19 @@ public class BotAPI {
     }
 
     public void setBind(Long userID, UUID uuid) {
+        if (MySQL.ENABLED){
+            MySQL.savePlayer(userID,uuid.toString());
+            return;
+        }
         FileConfiguration data = AmazingBot.getData().getConfig();
         data.set(String.valueOf(userID), uuid.toString());
         AmazingBot.getData().save();
     }
 
     public UUID getPlayer(Long userID) {
+        if (MySQL.ENABLED){
+            return MySQL.getPlayer(userID);
+        }
         UUID uuid = null;
         FileConfiguration data = AmazingBot.getData().getConfig();
         if (data.getString(String.valueOf(userID)) != null) {
@@ -72,6 +80,9 @@ public class BotAPI {
     }
 
     public Long getUser(UUID playerID) {
+        if (MySQL.ENABLED){
+            return MySQL.getQQ(playerID.toString());
+        }
         Long userID = null;
         FileConfiguration data = AmazingBot.getData().getConfig();
         for (String key : data.getConfigurationSection("").getKeys(false)) {

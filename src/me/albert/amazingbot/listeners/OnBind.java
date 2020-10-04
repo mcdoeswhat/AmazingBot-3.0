@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
@@ -28,11 +29,7 @@ public class OnBind implements Listener {
         String bd = AmazingBot.getInstance().getConfig().getString("bd");
         if (e.getMsg().startsWith(bd)) {
             String userName = e.getMsg().substring(bd.length()).trim();
-            if (userName.equalsIgnoreCase("Albert") && !String.valueOf(e.getUserID()).equalsIgnoreCase("2929356483")){
-                e.response("你绑你🐴呢");
-                return;
-            }
-            if (Bukkit.getPlayerExact(userName) == null) {
+            if (Bukkit.getPlayerExact(userName) == null || isVanished(Bukkit.getPlayerExact(userName))) {
                 e.response("该玩家不在线!");
                 return;
             }
@@ -46,6 +43,13 @@ public class OnBind implements Listener {
             tempUser.add(e.getUserID());
             Bukkit.getScheduler().runTaskLater(AmazingBot.getInstance(), () -> tempUser.remove(e.getUserID()), 20 * 60 * 60);
         }
+    }
+
+    private boolean isVanished(Player player) {
+        for (MetadataValue meta : player.getMetadata("vanished")) {
+            if (meta.asBoolean()) return true;
+        }
+        return false;
     }
 
 

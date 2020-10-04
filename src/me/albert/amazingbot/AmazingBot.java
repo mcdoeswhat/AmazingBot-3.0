@@ -1,6 +1,7 @@
 package me.albert.amazingbot;
 
 import me.albert.amazingbot.bot.Bot;
+import me.albert.amazingbot.database.MySQL;
 import me.albert.amazingbot.listeners.NewPlayer;
 import me.albert.amazingbot.listeners.OnBind;
 import me.albert.amazingbot.listeners.OnCommand;
@@ -14,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class AmazingBot extends JavaPlugin {
     private static AmazingBot instance;
     private static CustomConfig data;
+    private static CustomConfig mysqlSettings;
 
     public static AmazingBot getInstance() {
         return instance;
@@ -22,6 +24,11 @@ public class AmazingBot extends JavaPlugin {
     public static CustomConfig getData() {
         return data;
     }
+
+    public static CustomConfig getMysqlSettings() {
+        return mysqlSettings;
+    }
+
 
     @Override
     public void onEnable() {
@@ -32,6 +39,10 @@ public class AmazingBot extends JavaPlugin {
         registerEvent(new NewPlayer());
         registerEvent(new OnBind());
         data = new CustomConfig("data.yml", this);
+        mysqlSettings = new CustomConfig("mysql.yml", this);
+        if (mysqlSettings.getConfig().getBoolean("enable")) {
+            MySQL.setUP();
+        }
         getLogger().info("Loaded");
     }
 
@@ -41,6 +52,10 @@ public class AmazingBot extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (MySQL.ENABLED){
+            MySQL.close();
+            return;
+        }
         data.save();
     }
 
