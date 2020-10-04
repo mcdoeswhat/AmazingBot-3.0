@@ -132,8 +132,8 @@ public class MySQL {
 
     public static Long getQQ(String UUID){
         try (Connection con = dataSource.getConnection();
-             PreparedStatement stmt = con.prepareStatement("SELECT `id`, `qq`, `uuid`, " +
-                     "`time` FROM `" + DATABASE + "`.`ips` WHERE  `uuid`=?;")) {
+             PreparedStatement stmt = con.prepareStatement("SELECT `id`, `qq`, `uuid` " +
+                     "FROM `" + DATABASE + "`.`binds` WHERE  `uuid`=?;")) {
             stmt.setString(1, UUID);
             try (ResultSet resultSet = stmt.executeQuery()) {
                 if (resultSet.next()) {
