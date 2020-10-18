@@ -10,6 +10,7 @@ public class GroupMemberLeaveEvent extends Event {
     private MemberLeaveEvent event;
 
     public GroupMemberLeaveEvent(MemberLeaveEvent event) {
+        super(true);
         this.event = event;
     }
 

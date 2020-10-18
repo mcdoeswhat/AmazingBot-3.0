@@ -10,6 +10,7 @@ public class GroupMemberJoinEvent extends Event {
     private MemberJoinEvent event;
 
     public GroupMemberJoinEvent(MemberJoinEvent event) {
+        super(true);
         this.event = event;
     }
 

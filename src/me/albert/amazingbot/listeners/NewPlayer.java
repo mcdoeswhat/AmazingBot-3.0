@@ -14,23 +14,25 @@ public class NewPlayer implements Listener {
 
     @EventHandler
     public void msgCheck(GroupMessageEvent e) {
-        if (!Utils.hasGroup(e.getGroupID())) {
-            return;
-        }
-        String serverName = AmazingBot.getInstance().getConfig().getString("server_name");
-        String label = AmazingBot.getInstance().getConfig().getString("function.new_player")
-                .replace("%server%", serverName);
-        if (e.getMsg().equalsIgnoreCase(label)) {
-            int i = 0;
-            for (OfflinePlayer p : Bukkit.getOfflinePlayers()) {
-                Date a = new Date(System.currentTimeMillis());
-                Date b = new Date(p.getFirstPlayed());
-                if (Utils.isSameDay(a, b)) {
-                    i++;
-                }
+        Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
+            if (!Utils.hasGroup(e.getGroupID())) {
+                return;
             }
-            e.response(serverName + "今日新玩家数量： " + i);
-        }
+            String serverName = AmazingBot.getInstance().getConfig().getString("server_name");
+            String label = AmazingBot.getInstance().getConfig().getString("function.new_player")
+                    .replace("%server%", serverName);
+            if (e.getMsg().equalsIgnoreCase(label)) {
+                int i = 0;
+                for (OfflinePlayer p : Bukkit.getOfflinePlayers()) {
+                    Date a = new Date(System.currentTimeMillis());
+                    Date b = new Date(p.getFirstPlayed());
+                    if (Utils.isSameDay(a, b)) {
+                        i++;
+                    }
+                }
+                e.response(serverName + "今日新玩家数量： " + i);
+            }
+        });
 
     }
 }

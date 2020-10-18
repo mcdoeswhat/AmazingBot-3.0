@@ -9,6 +9,7 @@ public class GroupRequestJoinEvent extends Event {
     private MemberJoinRequestEvent event;
 
     public GroupRequestJoinEvent(MemberJoinRequestEvent event) {
+        super(true);
         this.event = event;
     }
 

@@ -1,6 +1,5 @@
 package me.albert.amazingbot.events;
 
-import net.mamoe.mirai.event.events.MemberJoinEvent;
 import net.mamoe.mirai.event.events.NewFriendRequestEvent;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -10,6 +9,7 @@ public class FriendRequestEvent extends Event {
     private NewFriendRequestEvent event;
 
     public FriendRequestEvent(NewFriendRequestEvent event) {
+        super(true);
         this.event = event;
     }
 

@@ -10,6 +10,7 @@ public class MessageReceiveEvent extends Event implements Cancellable {
     private String msg;
 
     public MessageReceiveEvent(String msg) {
+        super(true);
         this.msg = msg;
     }
 

@@ -15,6 +15,7 @@ public class GroupMessageEvent extends Event implements Cancellable {
     private net.mamoe.mirai.message.GroupMessageEvent event;
 
     public GroupMessageEvent(String msg, Long userID, Long groupID, String rawMessage, net.mamoe.mirai.message.GroupMessageEvent event) {
+        super(true);
         this.userID = userID;
         this.groupID = groupID;
         this.msg = msg;
