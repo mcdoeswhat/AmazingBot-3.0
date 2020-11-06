@@ -100,6 +100,19 @@ public class MySQL {
     }
 
     public static void savePlayer(Long qq,String uuid){
+        if (getPlayer(qq) != null){
+            try (Connection con = dataSource.getConnection();
+                 PreparedStatement stmt = con.prepareStatement("UPDATE  `" + DATABASE + "`.`binds` " +
+                         "SET `qq`=?, `uuid`=? WHERE `qq`=?;",RETURN_GENERATED_KEYS)) {
+                stmt.setLong(1, qq);
+                stmt.setString(2, uuid);
+                stmt.setLong(3, qq);
+                stmt.executeUpdate();
+            } catch (SQLException sqlEx) {
+                sqlEx.printStackTrace();
+            }
+            return;
+        }
         try (Connection con = dataSource.getConnection();
              PreparedStatement stmt = con.prepareStatement("INSERT INTO `" + DATABASE + "`.`binds` " +
                      "(`qq`, `uuid`)"+
