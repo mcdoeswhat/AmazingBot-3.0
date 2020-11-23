@@ -6,7 +6,6 @@ import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 
 import java.util.UUID;
 
@@ -19,15 +18,21 @@ public class BotAPI {
     }
 
     public void sendGroupMsg(String groupID, String msg) {
-        try {
-            bot.getGroup(Long.parseLong(groupID)).sendMessage(msg);
-        } catch (Exception ignored){}
+            Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
+                try {
+                bot.getGroup(Long.parseLong(groupID)).sendMessage(msg);
+                } catch (Exception ignored) {
+                }
+            });
     }
 
     public void sendPrivateMsg(String userID, String msg) {
-        try {
-        bot.getFriend(Long.parseLong(userID)).sendMessage(msg);
-        } catch (Exception ignored){}
+            Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
+                try {
+                bot.getFriend(Long.parseLong(userID)).sendMessage(msg);
+                } catch (Exception ignored) {
+                }
+            });
     }
 
     public void sendRawMsg(String msg) {
@@ -35,22 +40,27 @@ public class BotAPI {
     }
 
     public void changeTitle(Long groupID, Long userID, String title) {
-        try {
-        bot.getGroup(groupID).get(userID).setNameCard(title);
-        } catch (Exception ignored){}
+            Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
+                try {
+            bot.getGroup(groupID).get(userID).setNameCard(title);
+                } catch (Exception ignored) {
+                }
+            });
     }
 
     public Group getGroup(Long groupID) {
         try {
-        return bot.getGroup(groupID);
-        } catch (Exception ignored){}
+            return bot.getGroup(groupID);
+        } catch (Exception ignored) {
+        }
         return null;
     }
 
     public Friend getFriend(Long userID) {
         try {
-        return bot.getFriend(userID);
-        } catch (Exception ignored){}
+            return bot.getFriend(userID);
+        } catch (Exception ignored) {
+        }
         return null;
     }
 
@@ -59,8 +69,8 @@ public class BotAPI {
     }
 
     public void setBind(Long userID, UUID uuid) {
-        if (MySQL.ENABLED){
-            MySQL.savePlayer(userID,uuid.toString());
+        if (MySQL.ENABLED) {
+            MySQL.savePlayer(userID, uuid.toString());
             return;
         }
         FileConfiguration data = AmazingBot.getData().getConfig();
@@ -69,7 +79,7 @@ public class BotAPI {
     }
 
     public UUID getPlayer(Long userID) {
-        if (MySQL.ENABLED){
+        if (MySQL.ENABLED) {
             return MySQL.getPlayer(userID);
         }
         UUID uuid = null;
@@ -81,7 +91,7 @@ public class BotAPI {
     }
 
     public Long getUser(UUID playerID) {
-        if (MySQL.ENABLED){
+        if (MySQL.ENABLED) {
             return MySQL.getQQ(playerID.toString());
         }
         Long userID = null;

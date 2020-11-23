@@ -25,7 +25,7 @@ public class Bot {
     private static net.mamoe.mirai.Bot bot = null;
 
     public static void start() {
-        if (bot != null){
+        if (bot != null) {
             bot.close(new Throwable());
         }
         FileConfiguration config = AmazingBot.getInstance().getConfig();
@@ -50,7 +50,7 @@ public class Bot {
                 public ListeningStatus onGroupMessage(GroupMessageEvent event) {
                     me.albert.amazingbot.events.GroupMessageEvent groupMessageEvent = new
                             me.albert.amazingbot.events.GroupMessageEvent(event.getMessage().contentToString(),
-                            event.getSender().getId(), event.getGroup().getId(), "",event);
+                            event.getSender().getId(), event.getGroup().getId(), "", event);
                     if (!AmazingBot.getInstance().getConfig().getBoolean("async")) {
                         Bukkit.getScheduler().runTask(AmazingBot.getInstance(), () -> Bukkit.getPluginManager().callEvent(groupMessageEvent));
                         return ListeningStatus.LISTENING;
@@ -62,7 +62,7 @@ public class Bot {
                 @EventHandler
                 public ListeningStatus onPrivate(FriendMessageEvent event) {
                     PrivateMessageEvent privateMessageEvent = new PrivateMessageEvent(event.getMessage().contentToString(),
-                            event.getSender().getId(), "",event);
+                            event.getSender().getId(), "", event);
                     if (!AmazingBot.getInstance().getConfig().getBoolean("async")) {
                         Bukkit.getScheduler().runTask(AmazingBot.getInstance(), () -> Bukkit.getPluginManager().callEvent(privateMessageEvent));
                         return ListeningStatus.LISTENING;

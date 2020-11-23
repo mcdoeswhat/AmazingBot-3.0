@@ -14,7 +14,7 @@ public class PrivateMessageEvent extends Event implements Cancellable {
     private String rawMessage;
     private FriendMessageEvent event;
 
-    public PrivateMessageEvent(String msg, Long userID, String rawMessage,FriendMessageEvent event) {
+    public PrivateMessageEvent(String msg, Long userID, String rawMessage, FriendMessageEvent event) {
         super(true);
         this.userID = userID;
         this.msg = msg;

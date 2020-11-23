@@ -3,7 +3,6 @@ package me.albert.amazingbot.database;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import me.albert.amazingbot.AmazingBot;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.BufferedReader;
@@ -48,16 +47,16 @@ public class MySQL {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if (!hasData()){
+        if (!hasData()) {
             AmazingBot.getInstance().getLogger().info("§c检测到切换到MYSQL储存,且尚未有任何绑定数据,开始从yaml导入....");
             FileConfiguration data = AmazingBot.getData().getConfig();
             int imported = 0;
-            for (String qq : data.getConfigurationSection("").getKeys(false)){
+            for (String qq : data.getConfigurationSection("").getKeys(false)) {
                 String uuid = data.getString(qq);
                 imported++;
-                MySQL.savePlayer(Long.parseLong(qq),uuid);
+                MySQL.savePlayer(Long.parseLong(qq), uuid);
             }
-            AmazingBot.getInstance().getLogger().info("§c已从YAML储存导入了"+imported+"条数据!");
+            AmazingBot.getInstance().getLogger().info("§c已从YAML储存导入了" + imported + "条数据!");
         }
     }
 
@@ -85,9 +84,9 @@ public class MySQL {
         }
     }
 
-    public static boolean hasData(){
+    public static boolean hasData() {
         try (Connection con = dataSource.getConnection();
-             PreparedStatement stmt = con.prepareStatement("SELECT * FROM `"+DATABASE+"`.`binds` LIMIT 1;")) {
+             PreparedStatement stmt = con.prepareStatement("SELECT * FROM `" + DATABASE + "`.`binds` LIMIT 1;")) {
             try (ResultSet resultSet = stmt.executeQuery()) {
                 if (resultSet.next()) {
                     return true;
@@ -99,11 +98,11 @@ public class MySQL {
         return false;
     }
 
-    public static void savePlayer(Long qq,String uuid){
-        if (getPlayer(qq) != null){
+    public static void savePlayer(Long qq, String uuid) {
+        if (getPlayer(qq) != null) {
             try (Connection con = dataSource.getConnection();
                  PreparedStatement stmt = con.prepareStatement("UPDATE  `" + DATABASE + "`.`binds` " +
-                         "SET `qq`=?, `uuid`=? WHERE `qq`=?;",RETURN_GENERATED_KEYS)) {
+                         "SET `qq`=?, `uuid`=? WHERE `qq`=?;", RETURN_GENERATED_KEYS)) {
                 stmt.setLong(1, qq);
                 stmt.setString(2, uuid);
                 stmt.setLong(3, qq);
@@ -115,8 +114,8 @@ public class MySQL {
         }
         try (Connection con = dataSource.getConnection();
              PreparedStatement stmt = con.prepareStatement("INSERT INTO `" + DATABASE + "`.`binds` " +
-                     "(`qq`, `uuid`)"+
-                     "VALUES(?,?)  ON DUPLICATE KEY UPDATE  uuid=?;",RETURN_GENERATED_KEYS)) {
+                     "(`qq`, `uuid`)" +
+                     "VALUES(?,?)  ON DUPLICATE KEY UPDATE  uuid=?;", RETURN_GENERATED_KEYS)) {
             stmt.setLong(1, qq);
             stmt.setString(2, uuid);
             stmt.setString(3, uuid);
@@ -126,7 +125,7 @@ public class MySQL {
         }
     }
 
-    public static UUID getPlayer(Long qq){
+    public static UUID getPlayer(Long qq) {
         try (Connection con = dataSource.getConnection();
              PreparedStatement stmt = con.prepareStatement("SELECT `id`, `qq`, `uuid` " +
                      "FROM `" + DATABASE + "`.`binds` WHERE  `qq`=?;")) {
@@ -143,7 +142,7 @@ public class MySQL {
         return null;
     }
 
-    public static Long getQQ(String UUID){
+    public static Long getQQ(String UUID) {
         try (Connection con = dataSource.getConnection();
              PreparedStatement stmt = con.prepareStatement("SELECT `id`, `qq`, `uuid` " +
                      "FROM `" + DATABASE + "`.`binds` WHERE  `uuid`=?;")) {

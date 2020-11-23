@@ -1,6 +1,5 @@
 package me.albert.amazingbot.events;
 
-import net.mamoe.mirai.event.events.MemberJoinEvent;
 import net.mamoe.mirai.event.events.MemberLeaveEvent;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
