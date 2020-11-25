@@ -18,21 +18,21 @@ public class BotAPI {
     }
 
     public void sendGroupMsg(String groupID, String msg) {
-            Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
-                try {
+        Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
+            try {
                 bot.getGroup(Long.parseLong(groupID)).sendMessage(msg);
-                } catch (Exception ignored) {
-                }
-            });
+            } catch (Exception ignored) {
+            }
+        });
     }
 
     public void sendPrivateMsg(String userID, String msg) {
-            Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
-                try {
+        Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
+            try {
                 bot.getFriend(Long.parseLong(userID)).sendMessage(msg);
-                } catch (Exception ignored) {
-                }
-            });
+            } catch (Exception ignored) {
+            }
+        });
     }
 
     public void sendRawMsg(String msg) {
@@ -40,12 +40,12 @@ public class BotAPI {
     }
 
     public void changeTitle(Long groupID, Long userID, String title) {
-            Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
-                try {
-            bot.getGroup(groupID).get(userID).setNameCard(title);
-                } catch (Exception ignored) {
-                }
-            });
+        Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
+            try {
+                bot.getGroup(groupID).get(userID).setNameCard(title);
+            } catch (Exception ignored) {
+            }
+        });
     }
 
     public Group getGroup(Long groupID) {

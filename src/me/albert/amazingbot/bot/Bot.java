@@ -17,12 +17,20 @@ import net.mamoe.mirai.message.GroupMessageEvent;
 import net.mamoe.mirai.utils.BotConfiguration;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 
 public class Bot {
     private static BotAPI api;
     private static Boolean connected = false;
     private static net.mamoe.mirai.Bot bot = null;
+
+    private static void callEvent(Event event) {
+        if (!AmazingBot.getInstance().getConfig().getBoolean("async")) {
+            Bukkit.getScheduler().runTask(AmazingBot.getInstance(), () -> Bukkit.getPluginManager().callEvent(event));
+        }
+        Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> Bukkit.getPluginManager().callEvent(event));
+    }
 
     public static void start() {
         if (bot != null) {
@@ -51,11 +59,7 @@ public class Bot {
                     me.albert.amazingbot.events.GroupMessageEvent groupMessageEvent = new
                             me.albert.amazingbot.events.GroupMessageEvent(event.getMessage().contentToString(),
                             event.getSender().getId(), event.getGroup().getId(), "", event);
-                    if (!AmazingBot.getInstance().getConfig().getBoolean("async")) {
-                        Bukkit.getScheduler().runTask(AmazingBot.getInstance(), () -> Bukkit.getPluginManager().callEvent(groupMessageEvent));
-                        return ListeningStatus.LISTENING;
-                    }
-                    Bukkit.getPluginManager().callEvent(groupMessageEvent);
+                    callEvent(groupMessageEvent);
                     return ListeningStatus.LISTENING;
                 }
 
@@ -63,55 +67,35 @@ public class Bot {
                 public ListeningStatus onPrivate(FriendMessageEvent event) {
                     PrivateMessageEvent privateMessageEvent = new PrivateMessageEvent(event.getMessage().contentToString(),
                             event.getSender().getId(), "", event);
-                    if (!AmazingBot.getInstance().getConfig().getBoolean("async")) {
-                        Bukkit.getScheduler().runTask(AmazingBot.getInstance(), () -> Bukkit.getPluginManager().callEvent(privateMessageEvent));
-                        return ListeningStatus.LISTENING;
-                    }
-                    Bukkit.getPluginManager().callEvent(privateMessageEvent);
+                    callEvent(privateMessageEvent);
                     return ListeningStatus.LISTENING;
                 }
 
                 @EventHandler
                 public ListeningStatus onMemberJoinRequest(MemberJoinRequestEvent event) {
                     GroupRequestJoinEvent groupRequestJoinEvent = new GroupRequestJoinEvent(event);
-                    if (!AmazingBot.getInstance().getConfig().getBoolean("async")) {
-                        Bukkit.getScheduler().runTask(AmazingBot.getInstance(), () -> Bukkit.getPluginManager().callEvent(groupRequestJoinEvent));
-                        return ListeningStatus.LISTENING;
-                    }
-                    Bukkit.getPluginManager().callEvent(groupRequestJoinEvent);
+                    callEvent(groupRequestJoinEvent);
                     return ListeningStatus.LISTENING;
                 }
 
                 @EventHandler
                 public ListeningStatus onMemberJoin(MemberJoinEvent event) {
                     GroupMemberJoinEvent groupMemberJoinEvent = new GroupMemberJoinEvent(event);
-                    if (!AmazingBot.getInstance().getConfig().getBoolean("async")) {
-                        Bukkit.getScheduler().runTask(AmazingBot.getInstance(), () -> Bukkit.getPluginManager().callEvent(groupMemberJoinEvent));
-                        return ListeningStatus.LISTENING;
-                    }
-                    Bukkit.getPluginManager().callEvent(groupMemberJoinEvent);
+                    callEvent(groupMemberJoinEvent);
                     return ListeningStatus.LISTENING;
                 }
 
                 @EventHandler
                 public ListeningStatus onMemberLeave(MemberLeaveEvent event) {
                     GroupMemberLeaveEvent groupMemberLeaveEvent = new GroupMemberLeaveEvent(event);
-                    if (!AmazingBot.getInstance().getConfig().getBoolean("async")) {
-                        Bukkit.getScheduler().runTask(AmazingBot.getInstance(), () -> Bukkit.getPluginManager().callEvent(groupMemberLeaveEvent));
-                        return ListeningStatus.LISTENING;
-                    }
-                    Bukkit.getPluginManager().callEvent(groupMemberLeaveEvent);
+                    callEvent(groupMemberLeaveEvent);
                     return ListeningStatus.LISTENING;
                 }
 
                 @EventHandler
                 public ListeningStatus onFriendAdd(NewFriendRequestEvent event) {
                     FriendRequestEvent groupMemberLeaveEvent = new FriendRequestEvent(event);
-                    if (!AmazingBot.getInstance().getConfig().getBoolean("async")) {
-                        Bukkit.getScheduler().runTask(AmazingBot.getInstance(), () -> Bukkit.getPluginManager().callEvent(groupMemberLeaveEvent));
-                        return ListeningStatus.LISTENING;
-                    }
-                    Bukkit.getPluginManager().callEvent(groupMemberLeaveEvent);
+                    callEvent(groupMemberLeaveEvent);
                     return ListeningStatus.LISTENING;
                 }
 
@@ -121,7 +105,6 @@ public class Bot {
                     throw new RuntimeException("在事件处理中发生异常", exception);
                 }
             });
-
             bot.join();
         });
     }
