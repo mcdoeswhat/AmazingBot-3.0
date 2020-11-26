@@ -14,6 +14,8 @@ import net.mamoe.mirai.event.events.MemberLeaveEvent;
 import net.mamoe.mirai.event.events.NewFriendRequestEvent;
 import net.mamoe.mirai.message.FriendMessageEvent;
 import net.mamoe.mirai.message.GroupMessageEvent;
+import net.mamoe.mirai.message.MessageEvent;
+import net.mamoe.mirai.message.TempMessageEvent;
 import net.mamoe.mirai.utils.BotConfiguration;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -46,6 +48,7 @@ public class Bot {
             }
         };
         configuration.noNetworkLog();
+
         if (!config.getBoolean("main.botlog")) {
             configuration.noBotLog();
         }
@@ -68,6 +71,15 @@ public class Bot {
                     PrivateMessageEvent privateMessageEvent = new PrivateMessageEvent(event.getMessage().contentToString(),
                             event.getSender().getId(), "", event);
                     callEvent(privateMessageEvent);
+                    return ListeningStatus.LISTENING;
+                }
+
+                @EventHandler
+                public ListeningStatus onTemp(TempMessageEvent event) {
+                    me.albert.amazingbot.events.TempMessageEvent tempMessageEvent =
+                            new me.albert.amazingbot.events.TempMessageEvent(event.getMessage().contentToString(),
+                                    event.getSender().getId(),"",event);
+                    callEvent(tempMessageEvent);
                     return ListeningStatus.LISTENING;
                 }
 
@@ -96,6 +108,13 @@ public class Bot {
                 public ListeningStatus onFriendAdd(NewFriendRequestEvent event) {
                     FriendRequestEvent groupMemberLeaveEvent = new FriendRequestEvent(event);
                     callEvent(groupMemberLeaveEvent);
+                    return ListeningStatus.LISTENING;
+                }
+
+                @EventHandler
+                public ListeningStatus onMessage(MessageEvent event) {
+                    MessageReceiveEvent messageReceiveEvent = new MessageReceiveEvent(event.getMessage().contentToString(),event);
+                    callEvent(messageReceiveEvent);
                     return ListeningStatus.LISTENING;
                 }
 
