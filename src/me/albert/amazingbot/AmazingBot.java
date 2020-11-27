@@ -6,6 +6,7 @@ import me.albert.amazingbot.listeners.NewPlayer;
 import me.albert.amazingbot.listeners.OnBind;
 import me.albert.amazingbot.listeners.OnCommand;
 import me.albert.amazingbot.utils.CustomConfig;
+import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -52,7 +53,6 @@ public class AmazingBot extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
         if (MySQL.ENABLED) {
             MySQL.close();
             return;
