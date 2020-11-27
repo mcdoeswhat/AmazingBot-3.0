@@ -32,7 +32,7 @@ public class Bot {
             Bukkit.getScheduler().runTask(AmazingBot.getInstance(), () -> Bukkit.getPluginManager().callEvent(event));
             return;
         }
-       Bukkit.getPluginManager().callEvent(event);
+        Bukkit.getPluginManager().callEvent(event);
     }
 
     public static void start() {
