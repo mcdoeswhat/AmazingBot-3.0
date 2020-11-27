@@ -52,6 +52,7 @@ public class AmazingBot extends JavaPlugin {
 
     @Override
     public void onDisable() {
+
         if (MySQL.ENABLED) {
             MySQL.close();
             return;

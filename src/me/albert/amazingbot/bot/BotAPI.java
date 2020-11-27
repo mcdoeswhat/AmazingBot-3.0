@@ -20,7 +20,7 @@ public class BotAPI {
     public void sendGroupMsg(String groupID, String msg) {
         Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
             try {
-                bot.getGroup(Long.parseLong(groupID)).sendMessage(msg);
+                bot.getGroup(Long.parseLong(groupID)).sendMessageAsync(msg);
             } catch (Exception ignored) {
             }
         });
@@ -29,7 +29,7 @@ public class BotAPI {
     public void sendPrivateMsg(String userID, String msg) {
         Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
             try {
-                bot.getFriend(Long.parseLong(userID)).sendMessage(msg);
+                bot.getFriend(Long.parseLong(userID)).sendMessageAsync(msg);
             } catch (Exception ignored) {
             }
         });

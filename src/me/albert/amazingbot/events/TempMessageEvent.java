@@ -1,6 +1,5 @@
 package me.albert.amazingbot.events;
 
-import me.albert.amazingbot.bot.Bot;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -26,7 +25,7 @@ public class TempMessageEvent extends Event implements Cancellable {
     }
 
     public void response(String msg) {
-        event.getSender().sendMessage(msg);
+        event.getSender().sendMessageAsync(msg);
     }
 
     @Override

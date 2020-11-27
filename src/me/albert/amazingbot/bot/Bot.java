@@ -78,7 +78,7 @@ public class Bot {
                 public ListeningStatus onTemp(TempMessageEvent event) {
                     me.albert.amazingbot.events.TempMessageEvent tempMessageEvent =
                             new me.albert.amazingbot.events.TempMessageEvent(event.getMessage().contentToString(),
-                                    event.getSender().getId(),"",event);
+                                    event.getSender().getId(), "", event);
                     callEvent(tempMessageEvent);
                     return ListeningStatus.LISTENING;
                 }
@@ -113,8 +113,15 @@ public class Bot {
 
                 @EventHandler
                 public ListeningStatus onMessage(MessageEvent event) {
-                    MessageReceiveEvent messageReceiveEvent = new MessageReceiveEvent(event.getMessage().contentToString(),event);
+                    MessageReceiveEvent messageReceiveEvent = new MessageReceiveEvent(event.getMessage().contentToString(), event);
                     callEvent(messageReceiveEvent);
+                    return ListeningStatus.LISTENING;
+                }
+
+                @EventHandler
+                public ListeningStatus onEvent(net.mamoe.mirai.event.Event event) {
+                    ABEvent abEvent = new ABEvent(event);
+                    callEvent(abEvent);
                     return ListeningStatus.LISTENING;
                 }
 
