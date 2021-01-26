@@ -1,6 +1,5 @@
 package me.albert.amazingbot.listeners;
 
-import fr.xephi.authme.api.v3.AuthMeApi;
 import me.albert.amazingbot.AmazingBot;
 import me.albert.amazingbot.bot.Bot;
 import me.albert.amazingbot.events.GroupMessageEvent;
@@ -10,7 +9,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,8 +16,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class OnBind implements Listener {
-    private static HashMap<UUID, Long> binds = new HashMap<>();
-    private static HashSet<Long> tempUser = new HashSet<>();
+    private static final HashMap<UUID, Long> binds = new HashMap<>();
+    private static final HashSet<Long> tempUser = new HashSet<>();
 
     @EventHandler
     public void onGroup(GroupMessageEvent e) {
@@ -55,13 +53,6 @@ public class OnBind implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent e) {
-        Plugin authMe = Bukkit.getPluginManager().getPlugin("AuthMe");
-        if (authMe != null && authMe.isEnabled()) {
-            if (!AuthMeApi.getInstance().isAuthenticated(e.getPlayer())) {
-                e.getPlayer().sendMessage("§c请登录后再绑定!");
-                return;
-            }
-        }
         UUID uuid = e.getPlayer().getUniqueId();
         if (!binds.containsKey(uuid)) {
             return;

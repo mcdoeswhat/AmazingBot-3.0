@@ -1,38 +1,21 @@
 package me.albert.amazingbot.events;
 
-import me.albert.amazingbot.bot.Bot;
-import net.mamoe.mirai.message.FriendMessageEvent;
+import net.mamoe.mirai.event.events.FriendMessageEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 
-public class PrivateMessageEvent extends Event implements Cancellable {
-    private static final HandlerList handlers = new HandlerList();
-    private String msg;
-    private Long userID;
-    private String rawMessage;
-    private FriendMessageEvent event;
+public class PrivateMessageEvent extends MessageReceiveEvent {
+
+    private final String msg;
+    private final Long userID;
+    private final String rawMessage;
+    private final FriendMessageEvent event;
 
     public PrivateMessageEvent(String msg, Long userID, String rawMessage, FriendMessageEvent event) {
-        super(true);
+        super(msg, event);
         this.userID = userID;
         this.msg = msg;
         this.rawMessage = rawMessage;
         this.event = event;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
-
-    public void response(String msg) {
-        Bot.getApi().sendPrivateMsg(String.valueOf(userID), msg);
-    }
-
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
     }
 
     public String getMsg() {
@@ -49,15 +32,6 @@ public class PrivateMessageEvent extends Event implements Cancellable {
         return rawMessage;
     }
 
-    @Override
-    public boolean isCancelled() {
-        return false;
-    }
-
-    @Override
-    public void setCancelled(boolean b) {
-
-    }
 
     public FriendMessageEvent getEvent() {
         return event;

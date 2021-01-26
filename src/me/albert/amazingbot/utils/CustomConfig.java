@@ -1,5 +1,6 @@
 package me.albert.amazingbot.utils;
 
+import me.albert.amazingbot.AmazingBot;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -10,10 +11,10 @@ import java.io.IOException;
 
 public class CustomConfig {
 
-    private String filename;
+    private final String filename;
+    private final Plugin plugin;
     private FileConfiguration config;
     private File configFile;
-    private Plugin plugin;
 
     public CustomConfig(String name, Plugin plugin) {
         this.plugin = plugin;
@@ -48,8 +49,10 @@ public class CustomConfig {
         try {
             Config.load(ConfigFile);
             this.configFile = ConfigFile;
-        } catch (IOException | InvalidConfigurationException ignored) {
-
+        } catch (IOException | InvalidConfigurationException e) {
+            if (AmazingBot.getInstance().getConfig().getBoolean("debug")) {
+                e.printStackTrace();
+            }
         }
         return Config;
     }

@@ -1,39 +1,21 @@
 package me.albert.amazingbot.events;
 
-import me.albert.amazingbot.bot.Bot;
 import org.bukkit.Bukkit;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 
-public class GroupMessageEvent extends Event implements Cancellable {
-    private static final HandlerList handlers = new HandlerList();
-    private String msg;
-    private Long userID;
-    private Long groupID;
-    private String rawMessage;
-    private net.mamoe.mirai.message.GroupMessageEvent event;
+public class GroupMessageEvent extends MessageReceiveEvent {
+    private final String msg;
+    private final Long userID;
+    private final Long groupID;
+    private final String rawMessage;
+    private final net.mamoe.mirai.event.events.GroupMessageEvent event;
 
-    public GroupMessageEvent(String msg, Long userID, Long groupID, String rawMessage, net.mamoe.mirai.message.GroupMessageEvent event) {
-        super(true);
+    public GroupMessageEvent(String msg, Long userID, Long groupID, String rawMessage, net.mamoe.mirai.event.events.GroupMessageEvent event) {
+        super(msg, event);
         this.userID = userID;
         this.groupID = groupID;
         this.msg = msg;
         this.rawMessage = rawMessage;
         this.event = event;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
-
-    public void response(String msg) {
-        Bot.getApi().sendGroupMsg(String.valueOf(groupID), msg);
-    }
-
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
     }
 
     public String getMsg() {
@@ -53,17 +35,8 @@ public class GroupMessageEvent extends Event implements Cancellable {
         return rawMessage;
     }
 
-    @Override
-    public boolean isCancelled() {
-        return false;
-    }
 
-    @Override
-    public void setCancelled(boolean b) {
-
-    }
-
-    public net.mamoe.mirai.message.GroupMessageEvent getEvent() {
+    public net.mamoe.mirai.event.events.GroupMessageEvent getEvent() {
         return event;
     }
 }

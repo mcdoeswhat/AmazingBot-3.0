@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class BotAPI {
 
-    private net.mamoe.mirai.Bot bot;
+    private final net.mamoe.mirai.Bot bot;
 
     public BotAPI(net.mamoe.mirai.Bot bot) {
         this.bot = bot;
@@ -20,8 +20,11 @@ public class BotAPI {
     public void sendGroupMsg(String groupID, String msg) {
         Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
             try {
-                bot.getGroup(Long.parseLong(groupID)).sendMessageAsync(msg);
-            } catch (Exception ignored) {
+                bot.getGroup(Long.parseLong(groupID)).sendMessage(msg);
+            } catch (Exception e) {
+                if (AmazingBot.getInstance().getConfig().getBoolean("debug")) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -29,8 +32,11 @@ public class BotAPI {
     public void sendPrivateMsg(String userID, String msg) {
         Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
             try {
-                bot.getFriend(Long.parseLong(userID)).sendMessageAsync(msg);
-            } catch (Exception ignored) {
+                bot.getFriend(Long.parseLong(userID)).sendMessage(msg);
+            } catch (Exception e) {
+                if (AmazingBot.getInstance().getConfig().getBoolean("debug")) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -43,7 +49,10 @@ public class BotAPI {
         Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
             try {
                 bot.getGroup(groupID).get(userID).setNameCard(title);
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                if (AmazingBot.getInstance().getConfig().getBoolean("debug")) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -51,7 +60,10 @@ public class BotAPI {
     public Group getGroup(Long groupID) {
         try {
             return bot.getGroup(groupID);
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            if (AmazingBot.getInstance().getConfig().getBoolean("debug")) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
@@ -59,7 +71,10 @@ public class BotAPI {
     public Friend getFriend(Long userID) {
         try {
             return bot.getFriend(userID);
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            if (AmazingBot.getInstance().getConfig().getBoolean("debug")) {
+                e.printStackTrace();
+            }
         }
         return null;
     }

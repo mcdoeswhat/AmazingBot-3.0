@@ -1,46 +1,40 @@
 package me.albert.amazingbot.events;
 
-import net.mamoe.mirai.message.MessageEvent;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 
-public class MessageReceiveEvent extends Event implements Cancellable {
+import me.albert.amazingbot.bot.Bot;
+import net.mamoe.mirai.Mirai;
+import net.mamoe.mirai.event.events.MessageEvent;
+import net.mamoe.mirai.message.data.Message;
 
-    private static final HandlerList handlers = new HandlerList();
-    private String msg;
-    private MessageEvent event;
+public class MessageReceiveEvent extends ABEvent {
+    private final String msg;
+    private final MessageEvent event;
 
     public MessageReceiveEvent(String msg, MessageEvent event) {
-        super(true);
+        super(event);
         this.event = event;
         this.msg = msg;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
-
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
     }
 
     public String getMsg() {
         return msg;
     }
 
-    @Override
-    public boolean isCancelled() {
-        return false;
+    public void response(String message) {
+        event.getSubject().sendMessage(message);
     }
 
-    @Override
-    public void setCancelled(boolean b) {
-
+    public void response(Message message) {
+        event.getSubject().sendMessage(message);
     }
 
     public MessageEvent getEvent() {
         return event;
     }
+
+    public void recall(){
+        Mirai.getInstance().recallMessage(Bot.getApi().getBot(), getEvent().getSource());
+    }
+
+
 }

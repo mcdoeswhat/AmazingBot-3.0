@@ -1,37 +1,23 @@
 package me.albert.amazingbot.events;
 
+import net.mamoe.mirai.event.events.GroupTempMessageEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 
-public class TempMessageEvent extends Event implements Cancellable {
-    private static final HandlerList handlers = new HandlerList();
-    private String msg;
-    private Long userID;
-    private String rawMessage;
-    private net.mamoe.mirai.message.TempMessageEvent event;
+public class TempMessageEvent extends MessageReceiveEvent {
 
-    public TempMessageEvent(String msg, Long userID, String rawMessage, net.mamoe.mirai.message.TempMessageEvent event) {
-        super(true);
+    private final String msg;
+    private final Long userID;
+    private final String rawMessage;
+    private final GroupTempMessageEvent event;
+
+    public TempMessageEvent(String msg, Long userID, String rawMessage, GroupTempMessageEvent event) {
+        super(msg, event);
         this.userID = userID;
         this.msg = msg;
         this.rawMessage = rawMessage;
         this.event = event;
     }
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
-
-    public void response(String msg) {
-        event.getSender().sendMessageAsync(msg);
-    }
-
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
 
     public String getMsg() {
         return msg;
@@ -47,17 +33,8 @@ public class TempMessageEvent extends Event implements Cancellable {
         return rawMessage;
     }
 
-    @Override
-    public boolean isCancelled() {
-        return false;
-    }
 
-    @Override
-    public void setCancelled(boolean b) {
-
-    }
-
-    public net.mamoe.mirai.message.TempMessageEvent getEvent() {
+    public GroupTempMessageEvent getEvent() {
         return event;
     }
 }

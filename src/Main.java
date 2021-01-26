@@ -1,13 +1,7 @@
-import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.Bot;
-import net.mamoe.mirai.BotFactoryJvm;
-import net.mamoe.mirai.event.EventHandler;
-import net.mamoe.mirai.event.Events;
-import net.mamoe.mirai.event.ListeningStatus;
-import net.mamoe.mirai.event.SimpleListenerHost;
-import net.mamoe.mirai.message.GroupMessageEvent;
+import net.mamoe.mirai.BotFactory;
+import net.mamoe.mirai.event.events.MessageEvent;
 import net.mamoe.mirai.utils.BotConfiguration;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Scanner;
 
@@ -23,22 +17,14 @@ public class Main {
                 fileBasedDeviceInfo("deviceInfo.json");
             }
         };
-        Bot bot = BotFactoryJvm.newBot(qq, password, configuration);
-        bot.loginAsync();
-        Events.registerEvents(bot, new SimpleListenerHost() {
-            @EventHandler
-            public ListeningStatus onGroupMessage(GroupMessageEvent event) {
-                if (event.getMessage().contentToString().equalsIgnoreCase("测试")) {
-                    event.getGroup().sendMessage("测试成功");
-                }
-                return ListeningStatus.LISTENING;
-            }
-
-            @Override
-            public void handleException(@NotNull CoroutineContext context, @NotNull Throwable exception) {
-                throw new RuntimeException("在事件处理中发生异常", exception);
+        configuration.setProtocol(BotConfiguration.MiraiProtocol.ANDROID_PAD);
+        Bot bot = BotFactory.INSTANCE.newBot(qq, password, configuration);
+        bot.getEventChannel().subscribeAlways(MessageEvent.class, messageEvent -> {
+            if (messageEvent.getMessage().contentToString().equalsIgnoreCase("测试")) {
+                messageEvent.getSubject().sendMessage("测试成功");
             }
         });
-        bot.join();
+        bot.login();
     }
+
 }
