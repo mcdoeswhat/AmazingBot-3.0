@@ -32,7 +32,7 @@ public class MessageReceiveEvent extends ABEvent {
         return event;
     }
 
-    public void recall(){
+    public void recall() {
         Mirai.getInstance().recallMessage(Bot.getApi().getBot(), getEvent().getSource());
     }
 
