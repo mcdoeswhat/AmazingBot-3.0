@@ -105,6 +105,30 @@ public class BotAPI {
         return uuid;
     }
 
+    public void removePlayer(UUID playerID) {
+        if (MySQL.ENABLED) {
+            MySQL.removePlayer(playerID.toString());
+            return;
+        }
+        Long userID = null;
+        FileConfiguration data = AmazingBot.getData().getConfig();
+        for (String key : data.getConfigurationSection("").getKeys(false)) {
+            if (data.getString(key).equalsIgnoreCase(playerID.toString())) {
+                userID = Long.parseLong(key);
+            }
+        }
+        data.set(String.valueOf(userID),null);
+    }
+
+    public void removePlayer(Long userID) {
+        if (MySQL.ENABLED) {
+            MySQL.removePlayer(userID);
+            return;
+        }
+        FileConfiguration data = AmazingBot.getData().getConfig();
+        data.set(String.valueOf(userID),null);
+    }
+
     public Long getUser(UUID playerID) {
         if (MySQL.ENABLED) {
             return MySQL.getQQ(playerID.toString());

@@ -20,7 +20,7 @@ public class MySQL {
 
     public static boolean ENABLED = false;
 
-    private static HikariDataSource dataSource;
+    public static HikariDataSource dataSource;
     private static String DATABASE;
 
     public static void setUP() {
@@ -112,6 +112,19 @@ public class MySQL {
             }
             return;
         }
+        if (getQQ(uuid) != null) {
+            try (Connection con = dataSource.getConnection();
+                 PreparedStatement stmt = con.prepareStatement("UPDATE  `" + DATABASE + "`.`binds` " +
+                         "SET `qq`=?, `uuid`=? WHERE `uuid`=?;", RETURN_GENERATED_KEYS)) {
+                stmt.setLong(1, qq);
+                stmt.setString(2, uuid);
+                stmt.setLong(3, qq);
+                stmt.executeUpdate();
+            } catch (SQLException sqlEx) {
+                sqlEx.printStackTrace();
+            }
+            return;
+        }
         try (Connection con = dataSource.getConnection();
              PreparedStatement stmt = con.prepareStatement("INSERT INTO `" + DATABASE + "`.`binds` " +
                      "(`qq`, `uuid`)" +
@@ -140,6 +153,28 @@ public class MySQL {
             sqlEx.printStackTrace();
         }
         return null;
+    }
+
+    public static void removePlayer(Long qq) {
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement stmt = con.prepareStatement("DELETE " +
+                     "FROM `" + DATABASE + "`.`binds` WHERE  `qq`=?;")) {
+            stmt.setLong(1, qq);
+            stmt.executeUpdate();
+        } catch (SQLException sqlEx) {
+            sqlEx.printStackTrace();
+        }
+    }
+
+    public static void removePlayer(String uuid) {
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement stmt = con.prepareStatement("DELETE " +
+                     "FROM `" + DATABASE + "`.`binds` WHERE  `uuid`=?;")) {
+            stmt.setString(1, uuid);
+            stmt.executeUpdate();
+        } catch (SQLException sqlEx) {
+            sqlEx.printStackTrace();
+        }
     }
 
     public static Long getQQ(String UUID) {
