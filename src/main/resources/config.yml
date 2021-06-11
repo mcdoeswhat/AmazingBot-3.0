@@ -7,6 +7,8 @@ main:
   # ANDROID_PAD 平板 ANDROID_PHONE 手机 ANDROID_WATCH 手表
   protocol: ANDROID_PAD
 debug: false
+#绑定数据存储模式 可选yaml 或者 sqlite
+mode: "sqlite"
 #机器人主人列表
 owners:
   - '000000'

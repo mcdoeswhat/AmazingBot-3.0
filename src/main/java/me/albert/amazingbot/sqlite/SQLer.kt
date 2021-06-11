@@ -12,7 +12,7 @@ object SQLer {
 
     @JvmStatic
     val isEnable: Boolean
-        get() = AmazingBot.sqlite.getBoolean("enable")
+        get() = AmazingBot.config.getString("mode") == "sqlite"
 
     init {
         if (isEnable) {

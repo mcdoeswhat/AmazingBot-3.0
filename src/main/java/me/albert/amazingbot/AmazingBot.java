@@ -18,8 +18,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class AmazingBot extends Plugin {
 
-    @TInject(value = {"sqlite.yml"})
-    public static TConfig sqlite;
+    @TInject(value = {"config.yml"})
+    public static TConfig config;
 
     private static JavaPlugin instance;
     private static CustomConfig data;
