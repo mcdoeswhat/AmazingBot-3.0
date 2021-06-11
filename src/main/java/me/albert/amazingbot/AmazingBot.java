@@ -1,6 +1,7 @@
 package me.albert.amazingbot;
 
 import io.izzel.taboolib.module.config.TConfig;
+import io.izzel.taboolib.module.dependency.Dependency;
 import io.izzel.taboolib.module.inject.TInject;
 import me.albert.amazingbot.sqlite.SQLer;
 import io.izzel.taboolib.loader.Plugin;
@@ -14,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+@Dependency(maven = "net.mamoe:mirai-core:2.6.5")
 public class AmazingBot extends Plugin {
 
     @TInject(value = {"sqlite.yml"})

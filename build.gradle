@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'scala'
     id 'io.izzel.taboolib' version '1.3'
-    id 'org.jetbrains.kotlin.jvm' version '1.4.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.5.10'
     id 'maven'
 }
 
@@ -36,17 +36,13 @@ repositories {
 }
 
 dependencies {
-    compileOnly "net.mamoe:mirai-core:2.6.4"
+    compileOnly "net.mamoe:mirai-core:2.6.5"
     compileOnly 'ink.ptms.core:v11604:11604:all'
     compileOnly 'org.jetbrains.kotlin:kotlin-stdlib'
     compileOnly fileTree(dir: 'libs', includes: ['*.jar'])
 }
 
 processResources {
-    // 是否在编译时打包源代码
-   // from(sourceSets.main.allSource) {
-   //     exclude 'plugin.yml'
-   // }
     from(sourceSets.main.resources.srcDirs) {
         include 'plugin.yml'
         expand(

@@ -44,6 +44,7 @@ public class Bot {
             configuration.noNetworkLog();
         }
         Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getinstance(), () -> {
+            assert pasword != null;
             bot = BotFactory.INSTANCE.newBot(qq, pasword, configuration);
             bot.login();
             api = new BotAPI(bot);
