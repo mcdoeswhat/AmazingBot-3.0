@@ -1,7 +1,8 @@
 package me.albert.amazingbot;
 
+import com.xbaimiao.amazingbot.MiraiLoader;
+import io.izzel.taboolib.loader.util.ILoader;
 import io.izzel.taboolib.module.config.TConfig;
-import io.izzel.taboolib.module.dependency.Dependency;
 import io.izzel.taboolib.module.inject.TInject;
 import me.albert.amazingbot.sqlite.SQLer;
 import io.izzel.taboolib.loader.Plugin;
@@ -15,7 +16,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-@Dependency(maven = "net.mamoe:mirai-core:2.6.5")
 public class AmazingBot extends Plugin {
 
     @TInject(value = {"sqlite.yml"})
@@ -40,9 +40,10 @@ public class AmazingBot extends Plugin {
 
     @Override
     public void onEnable() {
+        MiraiLoader.start();
         instance = getPlugin();
         getPlugin().saveDefaultConfig();
-        Bot.start();
+        Bukkit.getScheduler().runTaskLater(getPlugin(), Bot::start,30L);
         registerEvent(new OnCommand());
         registerEvent(new NewPlayer());
         registerEvent(new OnBind());
@@ -54,7 +55,6 @@ public class AmazingBot extends Plugin {
         if (SQLer.isEnable()){
             getPlugin().getLogger().info("已启用sqlite储存数据");
         }
-        getPlugin().getLogger().info("Loaded");
     }
 
     private void registerEvent(Listener listener) {
