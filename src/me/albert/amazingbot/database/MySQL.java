@@ -118,7 +118,7 @@ public class MySQL {
                          "SET `qq`=?, `uuid`=? WHERE `uuid`=?;", RETURN_GENERATED_KEYS)) {
                 stmt.setLong(1, qq);
                 stmt.setString(2, uuid);
-                stmt.setLong(3, qq);
+                stmt.setString(3, uuid);
                 stmt.executeUpdate();
             } catch (SQLException sqlEx) {
                 sqlEx.printStackTrace();

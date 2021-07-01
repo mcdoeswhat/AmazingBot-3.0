@@ -19,6 +19,7 @@ public class Main {
         };
         configuration.setProtocol(BotConfiguration.MiraiProtocol.ANDROID_PAD);
         Bot bot = BotFactory.INSTANCE.newBot(qq, password, configuration);
+
         bot.getEventChannel().subscribeAlways(MessageEvent.class, messageEvent -> {
             if (messageEvent.getMessage().contentToString().equalsIgnoreCase("测试")) {
                 messageEvent.getSubject().sendMessage("测试成功");
