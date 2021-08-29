@@ -6,7 +6,6 @@ import net.mamoe.mirai.BotFactory;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.*;
 import net.mamoe.mirai.utils.BotConfiguration;
-import net.mamoe.mirai.utils.DeviceInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Event;
@@ -25,26 +24,26 @@ public class Bot {
     }
 
     public static void start() {
-        if (bot != null) {
-            bot.close(new Throwable());
-        }
-
-        FileConfiguration config = AmazingBot.getInstance().getConfig();
-        long qq = config.getLong("main.qq");
-        String pasword = config.getString("main.password");
-        // 使用自定义的配置
-        BotConfiguration configuration = new BotConfiguration() {
-            {
-                fileBasedDeviceInfo("deviceInfo.json");
-            }
-        };
-        configuration.setProtocol(BotConfiguration.MiraiProtocol.valueOf(config.getString("main.protocol")));
-
-        if (!config.getBoolean("main.botlog")) {
-            configuration.noBotLog();
-            configuration.noNetworkLog();
-        }
         Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
+            if (bot != null) {
+                bot.close(new Throwable());
+            }
+
+            FileConfiguration config = AmazingBot.getInstance().getConfig();
+            long qq = config.getLong("main.qq");
+            String pasword = config.getString("main.password");
+            // 使用自定义的配置
+            BotConfiguration configuration = new BotConfiguration() {
+                {
+                    fileBasedDeviceInfo("deviceInfo.json");
+                }
+            };
+            configuration.setProtocol(BotConfiguration.MiraiProtocol.valueOf(config.getString("main.protocol")));
+
+            if (!config.getBoolean("main.botlog")) {
+                configuration.noBotLog();
+                configuration.noNetworkLog();
+            }
             bot = BotFactory.INSTANCE.newBot(qq, pasword, configuration);
             bot.login();
             api = new BotAPI(bot);
