@@ -12,10 +12,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class AmazingBot extends JavaPlugin {
     private static AmazingBot instance;
     private static CustomConfig data;
     private static CustomConfig mysqlSettings;
+
+    public static AtomicBoolean async = new AtomicBoolean(true);
 
     public static AmazingBot getInstance() {
         return instance;
@@ -34,6 +38,7 @@ public class AmazingBot extends JavaPlugin {
     public void onEnable() {
         instance = this;
         saveDefaultConfig();
+        async.set(getConfig().getBoolean("async"));
         Bot.start();
         registerEvent(new OnCommand());
         registerEvent(new NewPlayer());
@@ -62,6 +67,7 @@ public class AmazingBot extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         reloadConfig();
+        async.set(getConfig().getBoolean("async"));
         data.reload();
         Bot.start();
         sender.sendMessage("§a所有配置文件已经重新载入!");

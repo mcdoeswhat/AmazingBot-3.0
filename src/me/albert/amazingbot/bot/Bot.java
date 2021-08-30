@@ -10,13 +10,20 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Event;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
+
 public class Bot {
     private static BotAPI api;
     private static Boolean connected = false;
     private static net.mamoe.mirai.Bot bot = null;
+    private static final AtomicBoolean close = new AtomicBoolean(false);
+    private static final AtomicBoolean starting = new AtomicBoolean(false);
+    private static final AtomicLong startingTime = new AtomicLong();
+
 
     private static void callEvent(Event event) {
-        if (!AmazingBot.getInstance().getConfig().getBoolean("async")) {
+        if (!AmazingBot.async.get()) {
             Bukkit.getScheduler().runTask(AmazingBot.getInstance(), () -> Bukkit.getPluginManager().callEvent(event));
             return;
         }
@@ -24,11 +31,17 @@ public class Bot {
     }
 
     public static void start() {
+        if (starting.get() && System.currentTimeMillis() - startingTime.get() < 1000 * 10) {
+            AmazingBot.getInstance().getLogger().info("§c机器人正在启动中,请稍后再试");
+            return;
+        }
+        starting.set(true);
+        startingTime.set(System.currentTimeMillis());
         Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
-            if (bot != null) {
+            if (bot != null && close.get()) {
+                close.set(false);
                 bot.close(new Throwable());
             }
-
             FileConfiguration config = AmazingBot.getInstance().getConfig();
             long qq = config.getLong("main.qq");
             String pasword = config.getString("main.password");
@@ -45,6 +58,7 @@ public class Bot {
                 configuration.noNetworkLog();
             }
             bot = BotFactory.INSTANCE.newBot(qq, pasword, configuration);
+            close.set(true);
             bot.login();
             api = new BotAPI(bot);
             bot.getEventChannel().subscribeAlways(net.mamoe.mirai.event.Event.class, event -> {
@@ -91,6 +105,7 @@ public class Bot {
                 }
                 callEvent(new ABEvent(event));
             });
+            starting.set(false);
         });
     }
 

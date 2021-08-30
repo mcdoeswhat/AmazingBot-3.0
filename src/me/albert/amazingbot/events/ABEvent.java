@@ -1,5 +1,6 @@
 package me.albert.amazingbot.events;
 
+import me.albert.amazingbot.AmazingBot;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
@@ -12,7 +13,7 @@ public class ABEvent extends Event {
     private final ConcurrentHashMap<String, Object> metas = new ConcurrentHashMap<>();
 
     public ABEvent(net.mamoe.mirai.event.Event event) {
-        super(true);
+        super(AmazingBot.async.get());
         this.event = event;
     }
 
