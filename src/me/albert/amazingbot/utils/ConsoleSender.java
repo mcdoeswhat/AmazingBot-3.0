@@ -2,6 +2,7 @@ package me.albert.amazingbot.utils;
 
 import me.albert.amazingbot.AmazingBot;
 import me.albert.amazingbot.events.GroupMessageEvent;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
@@ -34,9 +35,15 @@ public class ConsoleSender implements ConsoleCommandSender {
             for (String s : this.output) {
                 output.append(s.replaceAll("§\\S", "")).append("\n");
             }
-            e.response(output.toString());
-            this.output.clear();
+            send(output.toString());
         }, 4).getTaskId();
+    }
+
+    private synchronized void send(String msg) {
+        if (!msg.isEmpty()) {
+            e.response(msg);
+        }
+        this.output.clear();
     }
 
 
@@ -97,10 +104,20 @@ public class ConsoleSender implements ConsoleCommandSender {
         throw new UnsupportedOperationException();
     }
 
-    // just throw UnsupportedOperationException - we never use any of these methods
     @Override
     public Spigot spigot() {
-        throw new UnsupportedOperationException();
+        return new Spigot() {
+            public void sendMessage(BaseComponent component) {
+                output.add(component.toPlainText());
+                send();
+            }
+
+            public void sendMessage(BaseComponent... components) {
+                for (BaseComponent baseComponent : components) {
+                    sendMessage(baseComponent);
+                }
+            }
+        };
     }
 
     @Override
