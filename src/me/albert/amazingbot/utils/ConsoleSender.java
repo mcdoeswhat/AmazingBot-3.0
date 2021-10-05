@@ -12,44 +12,30 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Set;
 
 public class ConsoleSender implements ConsoleCommandSender {
-    private static int taskid;
+    private BukkitTask task = null;
     private final Server server;
     private final GroupMessageEvent e;
     private final ArrayList<String> output = new ArrayList<>();
+    private final ArrayList<String> tempOutPut = new ArrayList<>();
+    private final ConsoleSender instance;
 
     public ConsoleSender(Server server, GroupMessageEvent e) {
         this.server = server;
         this.e = e;
+        instance = this;
     }
-
-    private void send() {
-        Bukkit.getScheduler().cancelTask(taskid);
-        taskid = Bukkit.getScheduler().runTaskLaterAsynchronously(AmazingBot.getInstance(), () -> {
-            StringBuilder output = new StringBuilder();
-            for (String s : this.output) {
-                output.append(s.replaceAll("§\\S", "")).append("\n");
-            }
-            send(output.toString());
-        }, 4).getTaskId();
-    }
-
-    private synchronized void send(String msg) {
-        if (!msg.isEmpty()) {
-            e.response(msg);
-        }
-        this.output.clear();
-    }
-
 
     private Optional<ConsoleCommandSender> get() {
         return Optional.ofNullable(this.server.getConsoleSender());
     }
+
 
     @Override
     public Server getServer() {
@@ -63,9 +49,31 @@ public class ConsoleSender implements ConsoleCommandSender {
 
     @Override
     public void sendMessage(String message) {
-        this.output.add(message);
-        send();
+        if (task != null) {
+            task.cancel();
+        }
+        synchronized (tempOutPut) {
+            tempOutPut.add(message);
+        }
+        task = Bukkit.getScheduler().runTaskLaterAsynchronously(AmazingBot.getInstance(), () -> {
+            synchronized (output) {
+                synchronized (tempOutPut) {
+                    output.addAll(tempOutPut);
+                    tempOutPut.clear();
+                }
+                StringBuilder response = new StringBuilder();
+                for (String s : output) {
+                    response.append(s.replaceAll("§\\S", "")).append("\n");
+                }
+                String msg = response.toString();
+                if (!msg.isEmpty()) {
+                    e.response(msg);
+                    output.clear();
+                }
+            }
+        }, 4L);
     }
+
 
     @Override
     public void sendMessage(String[] messages) {
@@ -108,8 +116,7 @@ public class ConsoleSender implements ConsoleCommandSender {
     public Spigot spigot() {
         return new Spigot() {
             public void sendMessage(BaseComponent component) {
-                output.add(component.toPlainText());
-                send();
+                instance.sendMessage(component.toPlainText());
             }
 
             public void sendMessage(BaseComponent... components) {
