@@ -1,16 +1,17 @@
 package me.albert.amazingbot.utils;
 
-import me.albert.amazingbot.AmazingBot;
-import org.bukkit.configuration.InvalidConfigurationException;
+import com.google.common.base.Charsets;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.logging.Level;
 
 public class CustomConfig {
-
     private final String filename;
     private final Plugin plugin;
     private FileConfiguration config;
@@ -19,50 +20,52 @@ public class CustomConfig {
     public CustomConfig(String name, Plugin plugin) {
         this.plugin = plugin;
         this.filename = name;
-        this.config = create(name);
+        this.config = this.create(name);
     }
 
     public String getFilename() {
-        return filename;
+        return this.filename;
     }
 
     public void save() {
         try {
-            config.save(configFile);
-        } catch (IOException ignored) {
-
+            this.config.save(this.configFile);
+        } catch (IOException ex) {
+            this.plugin.getLogger().log(Level.SEVERE, "Could not save config to " + this.configFile, ex);
         }
-        this.config = create(filename);
     }
 
     public void reload() {
-        this.config = create(filename);
+        this.config = YamlConfiguration.loadConfiguration(this.configFile);
+        InputStream defConfigStream = this.plugin.getResource(configFile.getName());
+        if (defConfigStream != null) {
+            this.config.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream, Charsets.UTF_8)));
+        }
     }
 
     private FileConfiguration create(String file) {
-        File ConfigFile = new File(plugin.getDataFolder(), file);
+        File ConfigFile = new File(this.plugin.getDataFolder(), file);
         if (!ConfigFile.exists()) {
             ConfigFile.getParentFile().mkdirs();
-            plugin.saveResource(file, false);
-        }
-        YamlConfiguration Config = new YamlConfiguration();
-        try {
-            Config.load(ConfigFile);
-            this.configFile = ConfigFile;
-        } catch (IOException | InvalidConfigurationException e) {
-            if (AmazingBot.getInstance().getConfig().getBoolean("debug")) {
-                e.printStackTrace();
+            if (this.plugin.getResource(file) != null) {
+                this.plugin.saveResource(file, false);
+            } else {
+                try {
+                    ConfigFile.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
-        return Config;
+        this.configFile = ConfigFile;
+        return YamlConfiguration.loadConfiguration(this.configFile);
     }
 
     public FileConfiguration getConfig() {
-        return config;
+        return this.config;
     }
 
     public File getConfigFile() {
-        return configFile;
+        return this.configFile;
     }
-
 }
