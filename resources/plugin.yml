@@ -1,0 +1,8 @@
+name: AmazingBot
+version: 3.2.24
+author: Albert
+main: me.albert.amazingbot.AmazingBot
+commands:
+  amazingbot:
+    aliases: [ amb ]
+    permission: amazingbot.admin
