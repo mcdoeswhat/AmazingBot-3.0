@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Event;
 
+import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -51,11 +52,19 @@ public class Bot {
                     fileBasedDeviceInfo("deviceInfo.json");
                 }
             };
+            File folder = AmazingBot.getInstance().getDataFolder();;
+            configuration.setWorkingDir(folder);
             configuration.setProtocol(BotConfiguration.MiraiProtocol.valueOf(config.getString("main.protocol")));
-
             if (!config.getBoolean("main.botlog")) {
                 configuration.noBotLog();
                 configuration.noNetworkLog();
+            }
+            if (config.getBoolean("main.filelog")){
+                configuration.redirectBotLogToDirectory(new File("botlog"));
+                configuration.redirectNetworkLogToDirectory(new File("networklog"));
+            }
+            if (config.getBoolean("main.cache")){
+                configuration.enableContactCache();
             }
             bot = BotFactory.INSTANCE.newBot(qq, pasword, configuration);
             close.set(true);

@@ -2,7 +2,6 @@ package me.albert.amazingbot.utils;
 
 import me.albert.amazingbot.AmazingBot;
 import me.albert.amazingbot.events.GroupMessageEvent;
-import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
@@ -19,16 +18,14 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Set;
 
-public class ConsoleSender implements ConsoleCommandSender {
+public class ConsoleSenderLegacy implements ConsoleCommandSender {
     private BukkitTask task = null;
     private final GroupMessageEvent e;
     private final ArrayList<String> output = new ArrayList<>();
     private final ArrayList<String> tempOutPut = new ArrayList<>();
-    private final ConsoleSender instance;
 
-    public ConsoleSender(GroupMessageEvent e) {
+    public ConsoleSenderLegacy(GroupMessageEvent e) {
         this.e = e;
-        instance = this;
     }
 
     private Optional<ConsoleCommandSender> get() {
@@ -44,6 +41,12 @@ public class ConsoleSender implements ConsoleCommandSender {
     @Override
     public @NotNull String getName() {
         return "CONSOLE";
+    }
+
+    @NotNull
+    @Override
+    public Spigot spigot() {
+        return null;
     }
 
     @Override
@@ -109,21 +112,6 @@ public class ConsoleSender implements ConsoleCommandSender {
     @Override
     public void setOp(boolean b) {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public @NotNull Spigot spigot() {
-        return new Spigot() {
-            public void sendMessage(BaseComponent component) {
-                instance.sendMessage(component.toPlainText());
-            }
-
-            public void sendMessage(BaseComponent... components) {
-                for (BaseComponent baseComponent : components) {
-                    sendMessage(baseComponent);
-                }
-            }
-        };
     }
 
     @Override
