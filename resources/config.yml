@@ -1,0 +1,48 @@
+main:
+  qq: 0000
+  password: "000000"
+  #是否启用控制台实时输出机器人收到和发送的信息
+  #可用于检查机器人是否正常,如果看得到发送的信息说明腾讯暂时屏蔽了
+  botlog: true
+  #是否将日志改为文件记录
+  #开启后可通过networklog和botlog文件夹查看日志
+  #控制台不再显示机器人日志
+  filelog: false
+  #是否启用联系人缓存
+  #开启后可使用本地的联系人缓存,极大加快机器人登录速度
+  #可能有极小几率导致联系人或群成员不同步
+  cache: false
+  # ANDROID_PAD 平板 ANDROID_PHONE 手机 ANDROID_WATCH 手表
+  protocol: ANDROID_PAD
+debug: false
+#机器人主人列表
+owners:
+  - '000000'
+#需要启用的Q群
+groups:
+  '0000000':
+    command: "sudo"
+    #是否启用绑定机制
+    enable_bind: true
+server_name: ""
+bd: /bd
+#是否异步调用事件
+async: true
+#特殊功能关键词
+function:
+  new_player: "%server%今日新玩家"
+commands:
+  toggle_on: "开启%server%服务器 "
+  toggle_off: "关闭%server%服务器"
+  add: "添加%server%管理员 "
+  remove: "删除%server%管理员 "
+messages:
+  toggle_on: "%server% 服务器已在本群启用 指令 %label%"
+  toggle_off: "%server% 服务器已在本群关闭"
+  log_command: "&aQQ用户: %user% 执行了 %cmd% 命令"
+  remove: "%server%服务器已移除管理员%user%"
+  add: "%server%服务器已添加管理员%user%"
+  bind:
+    - "&b服务器Q群内的用户%user%请求与当前账号绑定"
+    - "&b请在聊天栏中输入 &a确认绑定 %user% &b完成绑定"
+    - "&c如果不是本人操作请忽略此消息!"
