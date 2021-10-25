@@ -1,7 +1,7 @@
 package me.albert.amazingbot.utils;
 
 import me.albert.amazingbot.AmazingBot;
-import me.albert.amazingbot.events.GroupMessageEvent;
+import net.mamoe.mirai.contact.Contact;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -21,13 +21,13 @@ import java.util.Set;
 
 public class ConsoleSender implements ConsoleCommandSender {
     private BukkitTask task = null;
-    private final GroupMessageEvent e;
+    private final Contact contact;
     private final ArrayList<String> output = new ArrayList<>();
     private final ArrayList<String> tempOutPut = new ArrayList<>();
     private final ConsoleSender instance;
 
-    public ConsoleSender(GroupMessageEvent e) {
-        this.e = e;
+    public ConsoleSender(Contact contact) {
+        this.contact = contact;
         instance = this;
     }
 
@@ -66,7 +66,7 @@ public class ConsoleSender implements ConsoleCommandSender {
                 }
                 String msg = response.toString();
                 if (!msg.isEmpty()) {
-                    e.response(msg);
+                    contact.sendMessage(msg);
                     output.clear();
                 }
             }

@@ -4,6 +4,7 @@ import me.albert.amazingbot.AmazingBot;
 import me.albert.amazingbot.events.GroupMessageEvent;
 import me.albert.amazingbot.utils.ConsoleSender;
 import me.albert.amazingbot.utils.ConsoleSenderLegacy;
+import net.mamoe.mirai.contact.Contact;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -51,33 +52,37 @@ public class OnCommand implements Listener {
         e.response("命令已提交");
         Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
             String cmd = e.getMsg().substring(label.length());
-            CommandSender sender = null;
-            if (spigot == 1) {
-                sender = new ConsoleSenderLegacy(e);
-            }
-            if (spigot == 2) {
-                sender = new ConsoleSender(e);
-            }
-            if (spigot == 0) {
-                try {
-                    Class.forName("org.bukkit.command.CommandSender$Spigot");
-                } catch (Exception ignored) {
-                    spigot = 1;
-                    AmazingBot.getInstance().getLogger().info("§a检测到旧版本Minecraft,启用旧版本指令信息返回...");
-                    sender = new ConsoleSenderLegacy(e);
-                }
-                if (sender == null) {
-                    spigot = 2;
-                    sender = new ConsoleSender(e);
-                }
-            }
-            CommandSender finalSender = sender;
-            Bukkit.getScheduler().runTask(AmazingBot.getInstance(), () -> Bukkit.dispatchCommand(finalSender, cmd));
+            CommandSender sender = getSender(e.getEvent().getGroup());
+            Bukkit.getScheduler().runTask(AmazingBot.getInstance(), () -> Bukkit.dispatchCommand(sender, cmd));
             String log = AmazingBot.getInstance().getConfig().getString("messages.log_command")
                     .replace("%user%", String.valueOf(e.getUserID())).replace("%cmd%", cmd)
                     .replace("&", "§");
             Bukkit.getLogger().info(log);
         });
+    }
+
+    public static CommandSender getSender(Contact contact) {
+        CommandSender sender = null;
+        if (spigot == 1) {
+            sender = new ConsoleSenderLegacy(contact);
+        }
+        if (spigot == 2) {
+            sender = new ConsoleSender(contact);
+        }
+        if (spigot == 0) {
+            try {
+                Class.forName("org.bukkit.command.CommandSender$Spigot");
+            } catch (Exception ignored) {
+                spigot = 1;
+                AmazingBot.getInstance().getLogger().info("§a检测到旧版本Minecraft,启用旧版本指令信息返回...");
+                sender = new ConsoleSenderLegacy(contact);
+            }
+            if (sender == null) {
+                spigot = 2;
+                sender = new ConsoleSender(contact);
+            }
+        }
+        return sender;
     }
 
     @EventHandler
