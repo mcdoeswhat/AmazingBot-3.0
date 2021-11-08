@@ -22,19 +22,21 @@ public class MySQL {
 
     public static HikariDataSource dataSource;
     private static String DATABASE;
+    private static String TABLE = "binds";
 
     public static void setUP() {
         ENABLED = true;
         FileConfiguration cfg = AmazingBot.getMysqlSettings().getConfig();
         HikariConfig config = new HikariConfig();
-        config.setPoolName("AmazingBot");
-        config.setDriverClassName("com.mysql.jdbc.Driver");
+        config.setPoolName(AmazingBot.getInstance().getName());
+        config.setDriverClassName("com.mysql.cj.jdbc.Driver");
         config.setUsername(cfg.getString("storage.username"));
         config.setPassword(cfg.getString("storage.password"));
         Properties properties = new Properties();
         String jdbcUrl = "jdbc:mysql://" + cfg.getString("storage.host") + ':' +
                 cfg.getString("storage.port") + '/' + cfg.getString("storage.database");
         DATABASE = cfg.getString("storage.database");
+        TABLE = cfg.getString("storage.table");
         properties.setProperty("useSSL", cfg.getString("storage.useSSL"));
         config.setConnectionTestQuery("SELECT 1");
         config.setMaximumPoolSize(1);
@@ -73,7 +75,7 @@ public class MySQL {
                 builder.append(line);
                 if (line.endsWith(";")) {
                     String sql = builder.toString();
-                    stmt.addBatch(sql);
+                    stmt.addBatch(String.format(sql, TABLE));
                     builder = new StringBuilder();
                 }
             }
@@ -85,8 +87,10 @@ public class MySQL {
     }
 
     public static boolean hasData() {
+        String sql = "SELECT * FROM `%s`.`%s` LIMIT 1;";
+        sql = String.format(sql, DATABASE, TABLE);
         try (Connection con = dataSource.getConnection();
-             PreparedStatement stmt = con.prepareStatement("SELECT * FROM `" + DATABASE + "`.`binds` LIMIT 1;")) {
+             PreparedStatement stmt = con.prepareStatement(sql)) {
             try (ResultSet resultSet = stmt.executeQuery()) {
                 if (resultSet.next()) {
                     return true;
@@ -100,9 +104,10 @@ public class MySQL {
 
     public static void savePlayer(Long qq, String uuid) {
         if (getPlayer(qq) != null) {
+            String sql = "UPDATE  `%s`.`%s` SET `qq`=?, `uuid`=? WHERE `qq`=?;";
+            sql = String.format(sql, DATABASE, TABLE);
             try (Connection con = dataSource.getConnection();
-                 PreparedStatement stmt = con.prepareStatement("UPDATE  `" + DATABASE + "`.`binds` " +
-                         "SET `qq`=?, `uuid`=? WHERE `qq`=?;", RETURN_GENERATED_KEYS)) {
+                 PreparedStatement stmt = con.prepareStatement(sql, RETURN_GENERATED_KEYS)) {
                 stmt.setLong(1, qq);
                 stmt.setString(2, uuid);
                 stmt.setLong(3, qq);
@@ -112,23 +117,14 @@ public class MySQL {
             }
             return;
         }
+        String sql = "INSERT INTO `%s`.`%s` (`qq`, `uuid`) VALUES(?,?) ON DUPLICATE KEY UPDATE `uuid`=?;";
+        sql = String.format(sql, DATABASE, TABLE);
         if (getQQ(uuid) != null) {
-            try (Connection con = dataSource.getConnection();
-                 PreparedStatement stmt = con.prepareStatement("UPDATE  `" + DATABASE + "`.`binds` " +
-                         "SET `qq`=?, `uuid`=? WHERE `uuid`=?;", RETURN_GENERATED_KEYS)) {
-                stmt.setLong(1, qq);
-                stmt.setString(2, uuid);
-                stmt.setString(3, uuid);
-                stmt.executeUpdate();
-            } catch (SQLException sqlEx) {
-                sqlEx.printStackTrace();
-            }
-            return;
+            sql = "UPDATE  `%s`.`%s` SET `qq`=?, `uuid`=? WHERE `uuid`=?;";
+            sql = String.format(sql, DATABASE, TABLE);
         }
         try (Connection con = dataSource.getConnection();
-             PreparedStatement stmt = con.prepareStatement("INSERT INTO `" + DATABASE + "`.`binds` " +
-                     "(`qq`, `uuid`)" +
-                     "VALUES(?,?)  ON DUPLICATE KEY UPDATE  uuid=?;", RETURN_GENERATED_KEYS)) {
+             PreparedStatement stmt = con.prepareStatement(sql, RETURN_GENERATED_KEYS)) {
             stmt.setLong(1, qq);
             stmt.setString(2, uuid);
             stmt.setString(3, uuid);
@@ -139,9 +135,10 @@ public class MySQL {
     }
 
     public static UUID getPlayer(Long qq) {
+        String sql = "SELECT `id`, `qq`, `uuid` FROM `%s`.`%s` WHERE  `qq`=?;";
+        sql = String.format(sql, DATABASE, TABLE);
         try (Connection con = dataSource.getConnection();
-             PreparedStatement stmt = con.prepareStatement("SELECT `id`, `qq`, `uuid` " +
-                     "FROM `" + DATABASE + "`.`binds` WHERE  `qq`=?;")) {
+             PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setLong(1, qq);
             try (ResultSet resultSet = stmt.executeQuery()) {
                 if (resultSet.next()) {
@@ -156,9 +153,10 @@ public class MySQL {
     }
 
     public static void removePlayer(Long qq) {
+        String sql = "DELETE FROM `%s`.`%s` WHERE `qq`=?;";
+        sql = String.format(sql, DATABASE, TABLE);
         try (Connection con = dataSource.getConnection();
-             PreparedStatement stmt = con.prepareStatement("DELETE " +
-                     "FROM `" + DATABASE + "`.`binds` WHERE  `qq`=?;")) {
+             PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setLong(1, qq);
             stmt.executeUpdate();
         } catch (SQLException sqlEx) {
@@ -167,9 +165,10 @@ public class MySQL {
     }
 
     public static void removePlayer(String uuid) {
+        String sql = "DELETE FROM `%s`.`%s` WHERE `uuid`=?;";
+        sql = String.format(sql, DATABASE, TABLE);
         try (Connection con = dataSource.getConnection();
-             PreparedStatement stmt = con.prepareStatement("DELETE " +
-                     "FROM `" + DATABASE + "`.`binds` WHERE  `uuid`=?;")) {
+             PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, uuid);
             stmt.executeUpdate();
         } catch (SQLException sqlEx) {
@@ -178,9 +177,10 @@ public class MySQL {
     }
 
     public static Long getQQ(String UUID) {
+        String sql = "SELECT `id`, `qq`, `uuid` FROM `%s`.`%s` WHERE `uuid`=?;";
+        sql = String.format(sql, DATABASE, TABLE);
         try (Connection con = dataSource.getConnection();
-             PreparedStatement stmt = con.prepareStatement("SELECT `id`, `qq`, `uuid` " +
-                     "FROM `" + DATABASE + "`.`binds` WHERE  `uuid`=?;")) {
+             PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, UUID);
             try (ResultSet resultSet = stmt.executeQuery()) {
                 if (resultSet.next()) {

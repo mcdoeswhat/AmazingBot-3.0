@@ -20,7 +20,7 @@ public class CustomConfig {
     public CustomConfig(String name, Plugin plugin) {
         this.plugin = plugin;
         this.filename = name;
-        this.config = this.create(name);
+        this.create(name);
     }
 
     public String getFilename() {
@@ -43,7 +43,7 @@ public class CustomConfig {
         }
     }
 
-    private FileConfiguration create(String file) {
+    private void create(String file) {
         File ConfigFile = new File(this.plugin.getDataFolder(), file);
         if (!ConfigFile.exists()) {
             ConfigFile.getParentFile().mkdirs();
@@ -58,7 +58,7 @@ public class CustomConfig {
             }
         }
         this.configFile = ConfigFile;
-        return YamlConfiguration.loadConfiguration(this.configFile);
+        reload();
     }
 
     public FileConfiguration getConfig() {

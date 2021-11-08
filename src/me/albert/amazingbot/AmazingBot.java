@@ -11,8 +11,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
-import java.net.URLClassLoader;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AmazingBot extends JavaPlugin {
@@ -67,7 +67,7 @@ public class AmazingBot extends JavaPlugin {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         reloadConfig();
         async.set(getConfig().getBoolean("async"));
         data.reload();
