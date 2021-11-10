@@ -117,7 +117,7 @@ public class BotAPI {
                 userID = Long.parseLong(key);
             }
         }
-        data.set(String.valueOf(userID),null);
+        data.set(String.valueOf(userID), null);
     }
 
     public void removePlayer(Long userID) {
@@ -126,7 +126,7 @@ public class BotAPI {
             return;
         }
         FileConfiguration data = AmazingBot.getData().getConfig();
-        data.set(String.valueOf(userID),null);
+        data.set(String.valueOf(userID), null);
     }
 
     public Long getUser(UUID playerID) {

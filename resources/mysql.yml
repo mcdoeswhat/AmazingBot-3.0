@@ -7,4 +7,5 @@ storage:
   host: localhost
   port: 3306
   database: amazingbot
+  table: binds
   useSSL: false

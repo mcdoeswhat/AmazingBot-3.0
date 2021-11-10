@@ -16,11 +16,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AmazingBot extends JavaPlugin {
+    public static AtomicBoolean async = new AtomicBoolean(true);
     private static AmazingBot instance;
     private static CustomConfig data;
     private static CustomConfig mysqlSettings;
-
-    public static AtomicBoolean async = new AtomicBoolean(true);
 
     public static AmazingBot getInstance() {
         return instance;

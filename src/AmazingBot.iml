@@ -19,7 +19,37 @@
     </content>
     <orderEntry type="jdk" jdkName="11 (2)" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: me.albert:mirai-core-fixed:2.8.0" level="project" />
+    <orderEntry type="library" name="Maven: com.github.mcdoeswhat.mirai:mirai-core-all:dev-fix-image-id-94da455bf8-1" level="project" />
+    <orderEntry type="library" name="Maven: com.github.mcdoeswhat.mirai:mirai-core-jvm:dev-fix-image-id-94da455bf8-1" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.2.2" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-common:1.5.20" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.2.2" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.5.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jetbrains.kotlinx:kotlinx-serialization-protobuf-jvm:1.2.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jetbrains.kotlinx:atomicfu-jvm:0.16.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-all:4.1.63.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.logging.log4j:log4j-api:2.14.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.bouncycastle:bcprov-jdk15on:1.64" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jetbrains.kotlinx:kotlinx-io-jvm:0.1.16" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jetbrains.kotlinx:kotlinx-io:0.1.16" level="project" />
+    <orderEntry type="library" name="Maven: com.github.mcdoeswhat.mirai:mirai-core-api-jvm:dev-fix-image-id-94da455bf8-1" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-reflect:1.5.30" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.5.1" level="project" />
+    <orderEntry type="library" name="Maven: io.ktor:ktor-client-okhttp:1.5.4" level="project" />
+    <orderEntry type="library" name="Maven: io.ktor:ktor-client-core-jvm:1.5.4" level="project" />
+    <orderEntry type="library" name="Maven: io.ktor:ktor-http-jvm:1.5.4" level="project" />
+    <orderEntry type="library" name="Maven: io.ktor:ktor-utils-jvm:1.5.4" level="project" />
+    <orderEntry type="library" name="Maven: io.ktor:ktor-io-jvm:1.5.4" level="project" />
+    <orderEntry type="library" name="Maven: io.ktor:ktor-http-cio-jvm:1.5.4" level="project" />
+    <orderEntry type="library" name="Maven: io.ktor:ktor-network-jvm:1.5.4" level="project" />
+    <orderEntry type="library" name="Maven: com.squareup.okhttp3:okhttp:4.6.0" level="project" />
+    <orderEntry type="library" name="Maven: com.squareup.okio:okio:2.6.0" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains:annotations:19.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.github.mcdoeswhat.mirai:mirai-core-utils-jvm:dev-fix-image-id-94da455bf8-1" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.30" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:1.5.30" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.30" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: net.mamoe:kotlin-jvm-blocking-bridge-jvm:1.10.6-1530.2" level="project" />
     <orderEntry type="library" name="Maven: com.zaxxer:HikariCP:5.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:2.0.0-alpha1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT" level="project" />

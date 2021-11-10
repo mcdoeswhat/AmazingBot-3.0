@@ -15,13 +15,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Bot {
-    private static BotAPI api;
-    private static Boolean connected = false;
-    private static net.mamoe.mirai.Bot bot = null;
     private static final AtomicBoolean close = new AtomicBoolean(false);
     private static final AtomicBoolean starting = new AtomicBoolean(false);
     private static final AtomicLong startingTime = new AtomicLong();
-
+    private static BotAPI api;
+    private static Boolean connected = false;
+    private static net.mamoe.mirai.Bot bot = null;
 
     private static void callEvent(Event event) {
         if (!AmazingBot.async.get()) {
@@ -52,18 +51,19 @@ public class Bot {
                     fileBasedDeviceInfo("deviceInfo.json");
                 }
             };
-            File folder = AmazingBot.getInstance().getDataFolder();;
+            File folder = AmazingBot.getInstance().getDataFolder();
+            ;
             configuration.setWorkingDir(folder);
             configuration.setProtocol(BotConfiguration.MiraiProtocol.valueOf(config.getString("main.protocol")));
             if (!config.getBoolean("main.botlog")) {
                 configuration.noBotLog();
                 configuration.noNetworkLog();
             }
-            if (config.getBoolean("main.filelog")){
+            if (config.getBoolean("main.filelog")) {
                 configuration.redirectBotLogToDirectory(new File("botlog"));
                 configuration.redirectNetworkLogToDirectory(new File("networklog"));
             }
-            if (config.getBoolean("main.cache")){
+            if (config.getBoolean("main.cache")) {
                 configuration.enableContactCache();
             }
             bot = BotFactory.INSTANCE.newBot(qq, pasword, configuration);

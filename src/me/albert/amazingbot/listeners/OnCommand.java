@@ -17,6 +17,8 @@ import java.util.List;
 public class OnCommand implements Listener {
 
 
+    public static int spigot = 0;
+
     private static boolean isAdmin(Long userID) {
         return AmazingBot.getInstance().getConfig().getStringList("owners").contains(String.valueOf(userID));
     }
@@ -36,29 +38,6 @@ public class OnCommand implements Listener {
             return null;
         }
         return AmazingBot.getInstance().getConfig().getString("groups." + groupID + ".command") + " ";
-    }
-
-    public static int spigot = 0;
-
-    @EventHandler
-    public void onCommand(GroupMessageEvent e) {
-        if (!isAdmin(e.getUserID())) {
-            return;
-        }
-        String label = getLabel(e.getGroupID());
-        if (label == null || !e.getMsg().startsWith(label)) {
-            return;
-        }
-        e.response("命令已提交");
-        Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
-            String cmd = e.getMsg().substring(label.length());
-            CommandSender sender = getSender(e.getEvent().getGroup());
-            Bukkit.getScheduler().runTask(AmazingBot.getInstance(), () -> Bukkit.dispatchCommand(sender, cmd));
-            String log = AmazingBot.getInstance().getConfig().getString("messages.log_command")
-                    .replace("%user%", String.valueOf(e.getUserID())).replace("%cmd%", cmd)
-                    .replace("&", "§");
-            Bukkit.getLogger().info(log);
-        });
     }
 
     public static CommandSender getSender(Contact contact) {
@@ -83,6 +62,27 @@ public class OnCommand implements Listener {
             }
         }
         return sender;
+    }
+
+    @EventHandler
+    public void onCommand(GroupMessageEvent e) {
+        if (!isAdmin(e.getUserID())) {
+            return;
+        }
+        String label = getLabel(e.getGroupID());
+        if (label == null || !e.getMsg().startsWith(label)) {
+            return;
+        }
+        e.response("命令已提交");
+        Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
+            String cmd = e.getMsg().substring(label.length());
+            CommandSender sender = getSender(e.getEvent().getGroup());
+            Bukkit.getScheduler().runTask(AmazingBot.getInstance(), () -> Bukkit.dispatchCommand(sender, cmd));
+            String log = AmazingBot.getInstance().getConfig().getString("messages.log_command")
+                    .replace("%user%", String.valueOf(e.getUserID())).replace("%cmd%", cmd)
+                    .replace("&", "§");
+            Bukkit.getLogger().info(log);
+        });
     }
 
     @EventHandler

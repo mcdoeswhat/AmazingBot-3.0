@@ -20,11 +20,11 @@ import java.util.Optional;
 import java.util.Set;
 
 public class ConsoleSender implements ConsoleCommandSender {
-    private BukkitTask task = null;
     private final Contact contact;
     private final ArrayList<String> output = new ArrayList<>();
     private final ArrayList<String> tempOutPut = new ArrayList<>();
     private final ConsoleSender instance;
+    private BukkitTask task = null;
 
     public ConsoleSender(Contact contact) {
         this.contact = contact;
