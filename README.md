@@ -11,6 +11,7 @@
 <dependency>
   <groupId>com.github.mcdoeswhat</groupId>
   <artifactId>AmazingBot-3.0</artifactId>
- <version>3.2.27</version>
+  <version>3.2.27</version>
+  <scope>provided</scope>
 </dependency>
   ```
