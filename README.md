@@ -1,8 +1,5 @@
 # AmazingBot-3.0
-<repository>
-		    <id>jitpack.io</id>
-		    <url>https://jitpack.io</url>
-		</repository>
+https://jitpack.io/#mcdoeswhat/AmazingBot-3.0/3.2.27
     
     <dependency>
 	    <groupId>com.github.mcdoeswhat</groupId>
