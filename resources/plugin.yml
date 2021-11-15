@@ -1,5 +1,5 @@
 name: AmazingBot
-version: 3.2.27
+version: 3.2.28
 author: Albert
 main: me.albert.amazingbot.AmazingBot
 commands:

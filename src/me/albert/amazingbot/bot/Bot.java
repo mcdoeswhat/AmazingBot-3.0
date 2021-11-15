@@ -52,7 +52,13 @@ public class Bot {
                 }
             };
             File folder = AmazingBot.getInstance().getDataFolder();
-            ;
+            //删除缓存
+            if (config.getBoolean("main.clear_cache")) {
+                File accountSecrets = new File(folder, "cache" + File.separator + "account.secrets");
+                if (accountSecrets.exists()) {
+                    accountSecrets.delete();
+                }
+            }
             configuration.setWorkingDir(folder);
             configuration.setProtocol(BotConfiguration.MiraiProtocol.valueOf(config.getString("main.protocol")));
             if (!config.getBoolean("main.botlog")) {

@@ -3,6 +3,7 @@ package me.albert.amazingbot.events;
 import me.albert.amazingbot.AmazingBot;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -39,7 +40,7 @@ public class ABEvent extends Event {
     }
 
     @Override
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return handlers;
     }
 
