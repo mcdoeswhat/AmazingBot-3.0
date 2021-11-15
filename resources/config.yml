@@ -15,7 +15,7 @@ main:
   # ANDROID_PAD 平板 ANDROID_PHONE 手机 ANDROID_WATCH 手表
   # IPAD 苹果手机 MACOS 苹果电脑
   protocol: ANDROID_PAD
-  # 是否在机器人启动时自动删除accounts.secrets缓存
+  # 是否在机器人启动时自动删除account.secrets缓存
   # 如果频繁出现机器人日志显示消息发送成功但是群里看不见,建议开启此选项
   clear_cache: false
 debug: false
