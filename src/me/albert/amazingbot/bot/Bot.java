@@ -18,7 +18,7 @@ public class Bot {
     private static final AtomicBoolean close = new AtomicBoolean(false);
     private static final AtomicBoolean starting = new AtomicBoolean(false);
     private static final AtomicLong startingTime = new AtomicLong();
-    private static BotAPI api;
+    private static BotAPI api = new BotAPI(null);
     private static Boolean connected = false;
     private static net.mamoe.mirai.Bot bot = null;
 
@@ -76,6 +76,7 @@ public class Bot {
             close.set(true);
             bot.login();
             api = new BotAPI(bot);
+            connected = true;
             bot.getEventChannel().subscribeAlways(net.mamoe.mirai.event.Event.class, event -> {
                 if (event instanceof NewFriendRequestEvent) {
                     callEvent(new FriendRequestEvent((NewFriendRequestEvent) event));

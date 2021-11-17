@@ -20,7 +20,7 @@ public class BotAPI {
     public void sendGroupMsg(String groupID, String msg) {
         Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
             try {
-                bot.getGroup(Long.parseLong(groupID)).sendMessage(msg);
+                bot.getGroupOrFail(Long.parseLong(groupID)).sendMessage(msg);
             } catch (Exception e) {
                 if (AmazingBot.getInstance().getConfig().getBoolean("debug")) {
                     e.printStackTrace();
@@ -32,7 +32,7 @@ public class BotAPI {
     public void sendPrivateMsg(String userID, String msg) {
         Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
             try {
-                bot.getFriend(Long.parseLong(userID)).sendMessage(msg);
+                bot.getFriendOrFail(Long.parseLong(userID)).sendMessage(msg);
             } catch (Exception e) {
                 if (AmazingBot.getInstance().getConfig().getBoolean("debug")) {
                     e.printStackTrace();
@@ -48,7 +48,7 @@ public class BotAPI {
     public void changeTitle(Long groupID, Long userID, String title) {
         Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
             try {
-                bot.getGroup(groupID).get(userID).setNameCard(title);
+                bot.getGroupOrFail(groupID).get(userID).setNameCard(title);
             } catch (Exception e) {
                 if (AmazingBot.getInstance().getConfig().getBoolean("debug")) {
                     e.printStackTrace();
@@ -59,7 +59,7 @@ public class BotAPI {
 
     public Group getGroup(Long groupID) {
         try {
-            return bot.getGroup(groupID);
+            return bot.getGroupOrFail(groupID);
         } catch (Exception e) {
             if (AmazingBot.getInstance().getConfig().getBoolean("debug")) {
                 e.printStackTrace();
@@ -70,7 +70,7 @@ public class BotAPI {
 
     public Friend getFriend(Long userID) {
         try {
-            return bot.getFriend(userID);
+            return bot.getFriendOrFail(userID);
         } catch (Exception e) {
             if (AmazingBot.getInstance().getConfig().getBoolean("debug")) {
                 e.printStackTrace();
@@ -137,8 +137,7 @@ public class BotAPI {
         FileConfiguration data = AmazingBot.getData().getConfig();
         for (String key : data.getConfigurationSection("").getKeys(false)) {
             if (data.getString(key).equalsIgnoreCase(playerID.toString())) {
-                return
-                        Long.parseLong(key);
+                return Long.parseLong(key);
             }
         }
         return userID;
