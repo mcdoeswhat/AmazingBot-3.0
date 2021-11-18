@@ -1,6 +1,6 @@
 # AmazingBot-3.0
 
-> https://jitpack.io/#mcdoeswhat/AmazingBot-3.0/3.2.28
+> https://jitpack.io/#mcdoeswhat/AmazingBot-3.0/3.2.30
 ```
 <repository>
    <id>jitpack.io</id>
@@ -11,7 +11,7 @@
 <dependency>
   <groupId>com.github.mcdoeswhat</groupId>
   <artifactId>AmazingBot-3.0</artifactId>
-  <version>3.2.28</version>
+  <version>3.2.30</version>
   <scope>provided</scope>
 </dependency>
 ```
