@@ -1,7 +1,8 @@
 name: AmazingBot
-version: 3.2.29
+version: 3.2.30
 author: Albert
 main: me.albert.amazingbot.AmazingBot
+api-version: 1.13
 commands:
   amazingbot:
     aliases: [ amb ]

@@ -6,12 +6,12 @@
     <groupId>me.albert</groupId>
     <artifactId>AmazingBot</artifactId>
     <packaging>jar</packaging>
-    <version>3.2.27</version>
+    <version>3.2.30</version>
     <name>AmazingBot</name>
 
     <properties>
         <res>${project.basedir}/resources/</res>
-        <revision>3.2.27</revision>
+        <revision>3.2.30</revision>
     </properties>
 
     <repositories>
@@ -80,7 +80,7 @@
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>5.0.0</version>
+            <version>4.0.3</version>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
@@ -105,8 +105,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.6.2</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>8</source>
+                    <target>8</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
