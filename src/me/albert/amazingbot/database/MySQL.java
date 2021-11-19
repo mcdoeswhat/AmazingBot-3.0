@@ -29,7 +29,14 @@ public class MySQL {
         FileConfiguration cfg = AmazingBot.getMysqlSettings().getConfig();
         HikariConfig config = new HikariConfig();
         config.setPoolName(AmazingBot.getInstance().getName());
-        config.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        String driver = "com.mysql.cj.jdbc.Driver";
+        try {
+            Class.forName(driver);
+        } catch (Exception ignored) {
+            driver = "com.mysql.jdbc.Driver";
+            AmazingBot.getInstance().getLogger().info("Driver class '" + driver + "' not found! Falling back to legacy MySQL driver (com.mysql.jdbc.Driver)");
+        }
+        config.setDriverClassName(driver);
         config.setUsername(cfg.getString("storage.username"));
         config.setPassword(cfg.getString("storage.password"));
         Properties properties = new Properties();

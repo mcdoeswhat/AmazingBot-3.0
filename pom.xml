@@ -6,12 +6,12 @@
     <groupId>me.albert</groupId>
     <artifactId>AmazingBot</artifactId>
     <packaging>jar</packaging>
-    <version>3.2.30</version>
+    <version>3.2.31</version>
     <name>AmazingBot</name>
 
     <properties>
         <res>${project.basedir}/resources/</res>
-        <revision>3.2.30</revision>
+        <revision>3.2.31</revision>
     </properties>
 
     <repositories>
