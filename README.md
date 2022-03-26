@@ -1,5 +1,8 @@
 # AmazingBot-3.0
 
+#已停止维护,请使用AmazingBot4
+https://github.com/mcdoeswhat/AmazingBot-4
+
 > https://jitpack.io/#mcdoeswhat/AmazingBot-3.0/3.2.31
 ```
 <repository>
